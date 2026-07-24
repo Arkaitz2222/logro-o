@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Logroño Achievements</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<style>
+
+/* ============ TOKENS ============ */
+:root{
+  --bg-deep:#090c11;
+  --bg-panel:#121722;
+  --bg-panel-2:#1a2130;
+  --bg-panel-3:#212a3c;
+  --border:rgba(255,255,255,0.07);
+  --border-strong:rgba(255,255,255,0.14);
+  --text:#e9edf3;
+  --text-muted:#8a94a6;
+  --text-faint:#5a6478;
+  --rioja:#a8304a;
+  --rioja-bright:#e0405f;
+  --rioja-glow:rgba(224,64,95,0.45);
+  --gold:#e0b24c;
+  --gold-glow:rgba(224,178,76,0.45);
+
+  --r-comun:#8a94a6;
+  --r-raro:#4f8fd9;
+  --r-epico:#a855d9;
+  --r-legendario:#e0b24c;
+  --r-mitico:#e0405f;
+
+  --font-display:'Oswald',sans-serif;
+  --font-body:'Inter',sans-serif;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+
+body{
+  font-family:var(--font-body);
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168,48,74,0.18), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(79,143,217,0.10), transparent),
+    var(--bg-deep);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px 16px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+
+/* ============ PHONE FRAME ============ */
+.phone{
+  width:400px;
+  max-width:100%;
+  height:844px;
+  max-height:92vh;
+  background:linear-gradient(180deg,var(--bg-panel) 0%, var(--bg-deep) 100%);
+  border:1px solid var(--border-strong);
+  border-radius:34px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:
+    0 0 0 8px #05070a,
+    0 30px 80px -20px rgba(0,0,0,0.8),
+    0 0 120px -40px var(--rioja-glow);
+  display:flex;
+  flex-direction:column;
+}
+
+/* vine motif divider used across headers */
+.vine{
+  height:2px;
+  background:linear-gradient(90deg, transparent, var(--rioja) 20%, var(--gold) 50%, var(--rioja) 80%, transparent);
+  opacity:0.6;
+  position:relative;
+}
+.vine::before, .vine::after{
+  content:'◆';
+  position:absolute; top:50%; transform:translateY(-50%);
+  font-size:6px; color:var(--gold);
+}
+.vine::before{left:calc(50% - 40px);}
+.vine::after{left:calc(50% + 36px);}
+
+/* ============ TOP BAR ============ */
+.topbar{
+  padding:22px 20px 14px;
+  text-align:center;
+  position:relative;
+  flex-shrink:0;
+}
+.topbar .eyebrow{
+  font-family:var(--font-display);
+  font-size:11px;
+  letter-spacing:4px;
+  color:var(--rioja-bright);
+  text-transform:uppercase;
+}
+.topbar h1{
+  font-family:var(--font-display);
+  font-size:26px;
+  font-weight:600;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-top:2px;
+  background:linear-gradient(180deg,#fff, #c7ccd6);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+/* ============ SCREENS ============ */
+.screens{
+  flex:1;
+  overflow-y:auto;
+  padding:8px 18px 100px;
+  scrollbar-width:none;
+}
+.screens::-webkit-scrollbar{display:none;}
+.screen{display:none; animation:fadeIn .35s ease;}
+.screen.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+/* ============ PROFILE CARD (inicio) ============ */
+.profile-card{
+  background:linear-gradient(160deg, var(--bg-panel-3), var(--bg-panel-2));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  display:flex;
+  gap:14px;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+  margin-top:6px;
+}
+.profile-card::before{
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(circle at 100% 0%, var(--rioja-glow), transparent 55%);
+  opacity:.5;
+  pointer-events:none;
+}
+.avatar{
+  width:58px; height:58px; border-radius:50%;
+  background:linear-gradient(160deg, var(--rioja), #5a1a2a);
+  background-size:cover; background-position:center;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-size:22px; font-weight:600;
+  border:2px solid var(--gold);
+  box-shadow:0 0 18px var(--rioja-glow);
+  flex-shrink:0;
+}
+.profile-info{flex:1; min-width:0;}
+.profile-info h2{font-size:17px; font-weight:700;}
+.profile-info .lvl{font-size:11px; color:var(--gold); font-family:var(--font-display); letter-spacing:1px; text-transform:uppercase; margin-top:1px;}
+.xp-bar{
+  margin-top:9px;
+  height:8px;
+  border-radius:6px;
+  background:rgba(255,255,255,0.06);
+  overflow:hidden;
+  border:1px solid var(--border);
+}
+.xp-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--rioja), var(--gold));
+  border-radius:6px;
+  transition:width .6s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 10px var(--rioja-glow);
+}
+.xp-label{font-size:10.5px; color:var(--text-muted); margin-top:5px;}
+
+/* ============ STAT GRID ============ */
+.stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
+.stat-box{
+  background:var(--bg-panel-2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px 6px;
+  text-align:center;
+}
+.stat-box .num{font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--text);}
+.stat-box .lbl{font-size:9.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.6px; margin-top:2px;}
+
+/* ============ SCAN BUTTON ============ */
+.scan-btn{
+  width:100%;
+  margin-top:16px;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(120deg, var(--rioja) 0%, #7a2338 60%, var(--rioja) 120%);
+  background-size:200% 100%;
+  color:#fff;
+  font-family:var(--font-display);
+  font-size:14px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  cursor:pointer;
+  box-shadow:0 8px 24px -6px var(--rioja-glow);
+  transition:transform .15s ease, background-position .5s ease;
+}
+.scan-btn:hover{transform:translateY(-2px); background-position:100% 0;}
+.scan-btn:active{transform:translateY(0);}
+.scan-btn svg{width:18px; height:18px;}
+
+/* ============ SECTION HEADERS ============ */
+.section-head{display:flex; align-items:baseline; justify-content:space-between; margin:22px 0 10px;}
+.section-head h3{font-family:var(--font-display); font-size:13px; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted);}
+.section-head .see-all{font-size:11px; color:var(--rioja-bright); cursor:pointer;}
+
+/* ============ ACHIEVEMENT ROW (inicio recientes) ============ */
+.ach-row{
+  display:flex; align-items:center; gap:12px;
+  background:var(--bg-panel-2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px 12px;
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:border-color .2s, transform .15s;
+}
+.ach-row:hover{border-color:var(--border-strong); transform:translateX(2px);}
+.ach-icon{
+  width:42px; height:42px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
+  background:var(--bg-panel-3);
+  border:1px solid var(--border);
+}
+.ach-row .txt{flex:1; min-width:0;}
+.ach-row .txt h4{font-size:13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.ach-row .txt p{font-size:11px; color:var(--text-muted); margin-top:1px;}
+.rarity-tag{
+  font-size:9px; font-family:var(--font-display); letter-spacing:1px; text-transform:uppercase;
+  padding:3px 7px; border-radius:20px; flex-shrink:0;
+}
+
+.empty-hint{
+  text-align:center; padding:22px 10px; color:var(--text-faint); font-size:12px; line-height:1.6;
+}
+
+/* ============ LOGROS SCREEN ============ */
+.filter-row{display:flex; gap:8px; margin:8px 0 4px;}
+.filter-row input, .filter-row select{
+  background:var(--bg-panel-2);
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:10px;
+  padding:9px 11px;
+  font-size:12.5px;
+  font-family:var(--font-body);
+}
+.filter-row input{flex:1;}
+.filter-row select{flex:0 0 auto;}
+
+.progress-strip{
+  margin:14px 0 6px;
+  display:flex; align-items:center; gap:10px;
+  font-size:11px; color:var(--text-muted);
+}
+.progress-strip .bar{flex:1; height:6px; border-radius:4px; background:rgba(255,255,255,0.06); overflow:hidden; border:1px solid var(--border);}
+.progress-strip .bar-fill{height:100%; background:linear-gradient(90deg,var(--rioja),var(--gold));}
+
+.ach-grid{display:flex; flex-direction:column; gap:8px; margin-top:10px;}
+.ach-card{
+  display:flex; align-items:center; gap:12px;
+  background:var(--bg-panel-2);
+  border:1px solid var(--border);
+  border-left:3px solid var(--r-comun);
+  border-radius:10px;
+  padding:11px 12px;
+  cursor:pointer;
+  transition:transform .15s, box-shadow .2s;
+}
+.ach-card:hover{transform:translateX(2px); box-shadow:0 4px 16px -8px rgba(0,0,0,0.6);}
+.ach-card.locked{opacity:.55; filter:grayscale(.4);}
+.ach-card.locked .ach-icon{filter:grayscale(1);}
+.ach-card .txt h4{font-size:13.5px; font-weight:600;}
+.ach-card .txt p{font-size:11px; color:var(--text-muted); margin-top:1px;}
+.ach-card .txt .place{font-size:10px; color:var(--text-faint); margin-top:2px;}
+.check{margin-left:auto; font-size:16px; flex-shrink:0;}
+
+/* rarity border/tag color helpers */
+.rar-comun{border-left-color:var(--r-comun);}
+.rar-raro{border-left-color:var(--r-raro);}
+.rar-epico{border-left-color:var(--r-epico);}
+.rar-legendario{border-left-color:var(--r-legendario);}
+.rar-mitico{border-left-color:var(--r-mitico);}
+.tag-comun{background:rgba(138,148,166,.15); color:var(--r-comun);}
+.tag-raro{background:rgba(79,143,217,.15); color:var(--r-raro);}
+.tag-epico{background:rgba(168,85,217,.15); color:var(--r-epico);}
+.tag-legendario{background:rgba(224,178,76,.15); color:var(--r-legendario);}
+.tag-mitico{background:rgba(224,64,95,.15); color:var(--r-mitico);}
+
+/* ============ PERFIL SCREEN ============ */
+.big-avatar-wrap{position:relative; width:84px; margin:14px auto 10px;}
+.big-avatar{
+  width:84px; height:84px; border-radius:50%;
+  background:linear-gradient(160deg, var(--rioja), #5a1a2a);
+  background-size:cover; background-position:center;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-size:32px; font-weight:600;
+  border:3px solid var(--gold);
+  box-shadow:0 0 30px var(--rioja-glow);
+  cursor:pointer;
+}
+.avatar-edit-badge{
+  position:absolute; bottom:-2px; right:-2px; width:26px; height:26px; border-radius:50%;
+  background:var(--rioja-bright); border:2px solid var(--bg-panel);
+  display:flex; align-items:center; justify-content:center; font-size:12px;
+  cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+.avatar-remove{
+  display:block; margin:6px auto 0; font-size:10.5px; color:var(--text-faint);
+  text-decoration:underline; cursor:pointer; background:none; border:none;
+}
+.name-edit{
+  display:block; margin:0 auto; text-align:center;
+  background:transparent; border:none; border-bottom:1px dashed var(--border-strong);
+  color:var(--text); font-family:var(--font-display); font-size:18px; letter-spacing:1px;
+  padding:4px 8px;
+}
+.name-edit:focus{outline:none; border-color:var(--rioja-bright);}
+.perfil-sub{text-align:center; font-size:11px; color:var(--text-muted); margin-top:4px;}
+
+.rarity-breakdown{display:flex; flex-direction:column; gap:8px; margin-top:16px;}
+.rb-row{display:flex; align-items:center; gap:10px; font-size:11.5px;}
+.rb-dot{width:9px; height:9px; border-radius:50%; flex-shrink:0;}
+.rb-row .bar{flex:1; height:6px; border-radius:4px; background:rgba(255,255,255,.06); overflow:hidden;}
+.rb-row .bar-fill{height:100%;}
+.rb-row .count{width:38px; text-align:right; color:var(--text-muted); font-variant-numeric:tabular-nums;}
+
+.danger-btn{
+  width:100%; margin-top:20px; padding:12px; border-radius:10px;
+  background:rgba(224,64,95,0.08); border:1px solid rgba(224,64,95,0.3);
+  color:var(--r-mitico); font-size:12px; font-family:var(--font-body); font-weight:600;
+  cursor:pointer;
+}
+
+/* ============ AJUSTES SCREEN ============ */
+.setting-row{
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--bg-panel-2); border:1px solid var(--border); border-radius:12px;
+  padding:13px 14px; margin-bottom:10px;
+}
+.setting-row .lbl{font-size:13px;}
+.setting-row .desc{font-size:10.5px; color:var(--text-faint); margin-top:2px;}
+.switch{position:relative; width:42px; height:24px; flex-shrink:0;}
+.switch input{opacity:0; width:0; height:0;}
+.slider{position:absolute; inset:0; background:var(--bg-panel-3); border:1px solid var(--border-strong); border-radius:20px; cursor:pointer; transition:.2s;}
+.slider::before{content:''; position:absolute; width:18px; height:18px; left:2px; top:2px; background:var(--text-muted); border-radius:50%; transition:.2s;}
+.switch input:checked + .slider{background:var(--rioja); border-color:var(--rioja-bright);}
+.switch input:checked + .slider::before{transform:translateX(18px); background:#fff;}
+
+.about-box{
+  background:var(--bg-panel-2); border:1px solid var(--border); border-radius:12px;
+  padding:14px; font-size:11.5px; color:var(--text-muted); line-height:1.7; margin-top:6px;
+}
+.about-box b{color:var(--text);}
+
+/* ============ BOTTOM NAV ============ */
+nav.bottomnav{
+  position:absolute; bottom:0; left:0; right:0;
+  height:78px;
+  background:linear-gradient(0deg, var(--bg-deep) 60%, transparent);
+  display:flex; align-items:flex-end; justify-content:space-around;
+  padding-bottom:14px;
+  border-top:1px solid var(--border);
+  backdrop-filter:blur(6px);
+}
+.navitem{
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  color:var(--text-faint); cursor:pointer; font-size:9.5px; letter-spacing:.5px;
+  width:52px;
+  transition:color .2s;
+}
+.navitem svg{width:19px; height:19px; stroke:currentColor;}
+.navitem.active{color:var(--rioja-bright);}
+.navitem.center{
+  width:54px; height:54px; border-radius:50%; margin-top:-26px;
+  background:linear-gradient(160deg, var(--rioja-bright), var(--rioja));
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 20px -4px var(--rioja-glow), 0 0 0 4px var(--bg-deep);
+  color:#fff;
+}
+.navitem.center svg{width:22px; height:22px;}
+
+/* ============ SCANNER MODAL ============ */
+.modal-overlay{
+  position:absolute; inset:0; background:rgba(4,5,8,0.85);
+  backdrop-filter:blur(4px);
+  display:none; align-items:center; justify-content:center;
+  z-index:50; padding:20px;
+}
+.modal-overlay.active{display:flex;}
+.modal{
+  width:100%; background:var(--bg-panel); border:1px solid var(--border-strong);
+  border-radius:20px; padding:20px; position:relative;
+  box-shadow:0 30px 60px -10px rgba(0,0,0,0.7);
+}
+.modal h3{font-family:var(--font-display); letter-spacing:1px; text-transform:uppercase; font-size:15px; margin-bottom:4px;}
+.modal .sub{font-size:11px; color:var(--text-muted); margin-bottom:14px;}
+.modal .close-x{
+  position:absolute; top:14px; right:14px; width:26px; height:26px; border-radius:50%;
+  background:var(--bg-panel-3); display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:13px; color:var(--text-muted); border:1px solid var(--border);
+}
+.tabs{display:flex; gap:6px; margin-bottom:12px;}
+.tab-btn{
+  flex:1; padding:9px; border-radius:9px; border:1px solid var(--border);
+  background:var(--bg-panel-2); color:var(--text-muted); font-size:11.5px; cursor:pointer;
+  font-family:var(--font-body); font-weight:600;
+}
+.tab-btn.active{background:var(--rioja); color:#fff; border-color:var(--rioja-bright);}
+.tabpane{display:none;}
+.tabpane.active{display:block;}
+.cam-wrap{
+  position:relative; width:100%; aspect-ratio:1/1; border-radius:14px; overflow:hidden;
+  background:#000; border:1px solid var(--border);
+}
+.cam-wrap video{width:100%; height:100%; object-fit:cover;}
+.cam-frame{
+  position:absolute; inset:14%; border:2px solid var(--rioja-bright); border-radius:14px;
+  box-shadow:0 0 0 2000px rgba(0,0,0,0.35);
+}
+.cam-frame::before, .cam-frame::after{content:''; position:absolute; width:18px; height:18px; border:2px solid var(--gold);}
+.cam-status{margin-top:10px; font-size:11px; color:var(--text-muted); text-align:center;}
+.upload-zone{
+  border:1.5px dashed var(--border-strong); border-radius:14px; padding:30px 14px;
+  text-align:center; cursor:pointer; color:var(--text-muted); font-size:12px;
+}
+.upload-zone:hover{border-color:var(--rioja-bright); color:var(--text);}
+.manual-row{display:flex; gap:8px; margin-top:12px;}
+.manual-row input{flex:1; background:var(--bg-panel-2); border:1px solid var(--border); border-radius:9px; padding:9px 11px; color:var(--text); font-size:12px;}
+.manual-row button{padding:9px 14px; border-radius:9px; border:none; background:var(--bg-panel-3); color:var(--text); font-size:11.5px; cursor:pointer; border:1px solid var(--border-strong);}
+
+/* ============ DETAIL MODAL ============ */
+.detail-hero{
+  height:120px; border-radius:14px; margin-bottom:14px;
+  display:flex; align-items:center; justify-content:center; font-size:46px;
+  background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08), transparent 60%);
+  border:1px solid var(--border);
+  position:relative; overflow:hidden;
+}
+.detail-hero.locked{filter:grayscale(1); opacity:.5;}
+.detail-title{font-family:var(--font-display); font-size:19px; font-weight:600; letter-spacing:.5px;}
+.detail-place{font-size:11.5px; color:var(--rioja-bright); margin-top:3px;}
+.detail-desc{font-size:12.5px; color:var(--text-muted); line-height:1.6; margin-top:10px; font-style:italic;}
+.detail-meta{display:flex; gap:8px; margin-top:14px;}
+.meta-chip{
+  flex:1; background:var(--bg-panel-2); border:1px solid var(--border); border-radius:10px;
+  padding:9px; text-align:center;
+}
+.meta-chip .v{font-family:var(--font-display); font-size:14px;}
+.meta-chip .k{font-size:9px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.5px; margin-top:2px;}
+
+/* ============ UNLOCK ANIMATION ============ */
+.unlock-overlay{
+  position:absolute; inset:0; z-index:80;
+  display:none; align-items:center; justify-content:center;
+  background:rgba(4,5,8,0.75); backdrop-filter:blur(6px);
+}
+.unlock-overlay.active{display:flex;}
+.unlock-card{
+  width:86%;
+  background:linear-gradient(160deg, var(--bg-panel-3), var(--bg-panel));
+  border:1px solid var(--gold);
+  border-radius:20px;
+  padding:26px 22px;
+  text-align:center;
+  position:relative;
+  animation:unlockIn .55s cubic-bezier(.2,1.4,.4,1);
+  box-shadow:0 0 60px var(--gold-glow), 0 30px 60px -10px rgba(0,0,0,0.8);
+}
+@keyframes unlockIn{
+  0%{transform:scale(.6) translateY(30px); opacity:0;}
+  60%{transform:scale(1.04) translateY(-4px); opacity:1;}
+  100%{transform:scale(1) translateY(0);}
+}
+.unlock-eyebrow{font-family:var(--font-display); font-size:11px; letter-spacing:4px; color:var(--gold); text-transform:uppercase;}
+.unlock-icon{
+  width:76px; height:76px; border-radius:50%; margin:16px auto 12px;
+  display:flex; align-items:center; justify-content:center; font-size:34px;
+  background:radial-gradient(circle, rgba(224,178,76,0.25), transparent 70%);
+  border:2px solid var(--gold);
+  animation:iconPulse 1.6s ease-in-out infinite;
+}
+@keyframes iconPulse{0%,100%{box-shadow:0 0 0 0 var(--gold-glow);} 50%{box-shadow:0 0 0 14px transparent;}}
+.unlock-name{font-family:var(--font-display); font-size:20px; font-weight:600;}
+.unlock-place{font-size:11.5px; color:var(--text-muted); margin-top:3px;}
+.unlock-xp{font-family:var(--font-display); font-size:13px; color:var(--gold); margin-top:12px; letter-spacing:1px;}
+.unlock-close{
+  margin-top:18px; width:100%; padding:11px; border-radius:10px; border:none;
+  background:var(--gold); color:#1a1206; font-family:var(--font-display); letter-spacing:1px;
+  font-size:12.5px; cursor:pointer; text-transform:uppercase;
+}
+.confetti{position:absolute; top:-10px; width:6px; height:12px; opacity:.9; animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(420px) rotate(540deg); opacity:0;}}
+
+/* ============ TOAST ============ */
+.toast{
+  position:absolute; bottom:96px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--bg-panel-3); border:1px solid var(--border-strong); color:var(--text);
+  padding:10px 16px; border-radius:10px; font-size:12px; opacity:0; pointer-events:none;
+  transition:opacity .25s, transform .25s; z-index:90; white-space:nowrap; max-width:88%;
+  text-overflow:ellipsis; overflow:hidden;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+.toast.err{border-color:var(--r-mitico); color:#ffb3c0;}
+
+/* ============ ONBOARDING (elegir nombre) ============ */
+.onboarding-overlay{
+  position:absolute; inset:0; z-index:100;
+  display:none; align-items:center; justify-content:center;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(224,64,95,0.25), transparent),
+    var(--bg-deep);
+  padding:30px 26px;
+  text-align:center;
+}
+.onboarding-overlay.active{display:flex; flex-direction:column;}
+.ob-eyebrow{font-family:var(--font-display); font-size:12px; letter-spacing:4px; color:var(--rioja-bright); text-transform:uppercase; margin-top:auto;}
+.ob-title{font-family:var(--font-display); font-size:28px; font-weight:600; letter-spacing:1px; margin-top:6px;}
+.ob-icon{font-size:46px; margin:22px 0 18px;}
+.ob-desc{font-size:12.5px; color:var(--text-muted); line-height:1.7; max-width:280px; margin:0 auto;}
+.ob-input{
+  margin:26px auto 0; display:block; width:100%; max-width:260px;
+  background:var(--bg-panel-2); border:1px solid var(--border-strong); border-radius:12px;
+  padding:13px 14px; color:var(--text); font-family:var(--font-display); font-size:16px;
+  letter-spacing:.5px; text-align:center;
+}
+.ob-input:focus{outline:none; border-color:var(--rioja-bright);}
+.ob-btn{
+  margin:16px auto auto; width:100%; max-width:260px; padding:13px;
+  border:none; border-radius:12px; background:linear-gradient(120deg, var(--rioja), var(--rioja-bright));
+  color:#fff; font-family:var(--font-display); font-size:13px; letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer; box-shadow:0 8px 24px -6px var(--rioja-glow);
+}
+.ob-btn:disabled{opacity:.4; cursor:not-allowed; box-shadow:none;}
+.ob-foot{margin-top:auto; padding-top:20px; font-size:10px; color:var(--text-faint);}
+
+/* scrollbar for card lists not needed - hidden globally on .screens */
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+
+  <div class="topbar">
+    <div class="eyebrow">Logroño</div>
+    <h1>Achievements</h1>
+  </div>
+  <div class="vine"></div>
+
+  <div class="screens">
+
+    <!-- ===== INICIO ===== -->
+    <section class="screen active" id="screen-inicio">
+      <div class="profile-card">
+        <div class="avatar" id="home-avatar">A</div>
+        <div class="profile-info">
+          <h2 id="home-name">Arkaitz</h2>
+          <div class="lvl">Nivel <span id="home-level">1</span></div>
+          <div class="xp-bar"><div class="xp-fill" id="home-xpfill" style="width:0%"></div></div>
+          <div class="xp-label"><span id="home-xptext">0 / 200 XP</span></div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-box"><div class="num" id="stat-count">0</div><div class="lbl">Logros</div></div>
+        <div class="stat-box"><div class="num" id="stat-level">1</div><div class="lbl">Nivel</div></div>
+        <div class="stat-box"><div class="num" id="stat-pct">0%</div><div class="lbl">Completado</div></div>
+      </div>
+
+      <button class="scan-btn" onclick="openScanner()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2M3 17v2a2 2 0 0 0 2 2h2M21 7V5a2 2 0 0 0-2-2h-2M21 17v2a2 2 0 0 1-2 2h-2M7 12h10M7 8h1M16 8h1M7 16h1M16 16h1"/></svg>
+        Escanear QR
+      </button>
+
+      <div class="section-head"><h3>Últimos logros</h3><span class="see-all" onclick="goTo('logros')">Ver todos</span></div>
+      <div id="recent-list"></div>
+    </section>
+
+    <!-- ===== LOGROS ===== -->
+    <section class="screen" id="screen-logros">
+      <div class="progress-strip">
+        <span id="logros-pct-text">0 / 0</span>
+        <div class="bar"><div class="bar-fill" id="logros-bar" style="width:0%"></div></div>
+      </div>
+      <div class="filter-row">
+        <input type="text" id="search-input" placeholder="Buscar logro..." oninput="renderAchievements()">
+        <select id="rarity-filter" onchange="renderAchievements()">
+          <option value="todas">Todas</option>
+          <option value="comun">Común</option>
+          <option value="raro">Raro</option>
+          <option value="epico">Épico</option>
+          <option value="legendario">Legendario</option>
+          <option value="mitico">Mítico</option>
+        </select>
+      </div>
+      <div class="ach-grid" id="ach-grid"></div>
+    </section>
+
+    <!-- ===== PERFIL ===== -->
+    <section class="screen" id="screen-perfil">
+      <div class="big-avatar-wrap">
+        <div class="big-avatar" id="perfil-avatar" onclick="document.getElementById('avatar-input').click()">A</div>
+        <div class="avatar-edit-badge" onclick="document.getElementById('avatar-input').click()">📷</div>
+      </div>
+      <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
+      <button class="avatar-remove" id="avatar-remove-btn" onclick="removeAvatar()" style="display:none">Quitar foto</button>
+      <input class="name-edit" id="perfil-name" value="Arkaitz" maxlength="16" onchange="setName(this.value)">
+      <div class="perfil-sub" id="perfil-sub">Nivel 1 · 0 logros conseguidos</div>
+
+      <div class="stat-grid" style="margin-top:20px;">
+        <div class="stat-box"><div class="num" id="p-total">0</div><div class="lbl">Total XP</div></div>
+        <div class="stat-box"><div class="num" id="p-count">0</div><div class="lbl">Logros</div></div>
+        <div class="stat-box"><div class="num" id="p-pct">0%</div><div class="lbl">Ciudad</div></div>
+      </div>
+
+      <div class="section-head"><h3>Por rareza</h3></div>
+      <div class="rarity-breakdown" id="rarity-breakdown"></div>
+
+      <button class="danger-btn" onclick="resetProgress()">Reiniciar progreso</button>
+    </section>
+
+    <!-- ===== AJUSTES ===== -->
+    <section class="screen" id="screen-ajustes">
+      <div class="section-head" style="margin-top:6px;"><h3>Preferencias</h3></div>
+      <div class="setting-row">
+        <div><div class="lbl">Sonido</div><div class="desc">Efecto al desbloquear un logro</div></div>
+        <label class="switch"><input type="checkbox" id="sound-toggle" checked onchange="saveSettings()"><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div><div class="lbl">Vibración</div><div class="desc">Vibrar el móvil al desbloquear</div></div>
+        <label class="switch"><input type="checkbox" id="vibrate-toggle" checked onchange="saveSettings()"><span class="slider"></span></label>
+      </div>
+
+      <div class="section-head"><h3>Acerca de</h3></div>
+      <div class="about-box">
+        <b>Logroño Achievements</b> es una colección de logros de la vida real escondidos por la ciudad en forma de código QR. Cada código desbloquea un logro permanente en tu perfil.<br><br>
+        Este es un prototipo web (v0.1) para probar la interfaz antes de convertirla en aplicación Android.
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ===== BOTTOM NAV ===== -->
+  <nav class="bottomnav">
+    <div class="navitem active" data-screen="inicio" onclick="goTo('inicio')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>
+      Inicio
+    </div>
+    <div class="navitem" data-screen="logros" onclick="goTo('logros')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4zM7 6H4a2 2 0 0 0 2 4M17 6h3a2 2 0 0 1-2 4"/></svg>
+      Logros
+    </div>
+    <div class="navitem center" onclick="openScanner()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2M3 17v2a2 2 0 0 0 2 2h2M21 7V5a2 2 0 0 0-2-2h-2M21 17v2a2 2 0 0 1-2 2h-2M7 12h10M7 8h1M16 8h1M7 16h1M16 16h1"/></svg>
+    </div>
+    <div class="navitem" data-screen="perfil" onclick="goTo('perfil')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM3 21c1.5-4.5 5.5-7 9-7s7.5 2.5 9 7"/></svg>
+      Perfil
+    </div>
+    <div class="navitem" data-screen="ajustes" onclick="goTo('ajustes')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.6 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      Ajustes
+    </div>
+  </nav>
+
+  <!-- ===== SCANNER MODAL ===== -->
+  <div class="modal-overlay" id="scanner-overlay">
+    <div class="modal">
+      <div class="close-x" onclick="closeScanner()">✕</div>
+      <h3>Escanear QR</h3>
+      <div class="sub">Apunta a un código repartido por Logroño</div>
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-cam-btn" onclick="switchTab('cam')">📷 Cámara</button>
+        <button class="tab-btn" id="tab-upload-btn" onclick="switchTab('upload')">🖼️ Subir imagen</button>
+      </div>
+      <div class="tabpane active" id="tab-cam">
+        <div class="cam-wrap">
+          <video id="qr-video" playsinline muted></video>
+          <div class="cam-frame"></div>
+        </div>
+        <div class="cam-status" id="cam-status">Solicitando acceso a la cámara…</div>
+      </div>
+      <div class="tabpane" id="tab-upload">
+        <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+          Toca para elegir una imagen con un código QR
+        </div>
+        <input type="file" id="file-input" accept="image/*" style="display:none" onchange="handleFileUpload(event)">
+      </div>
+      <div class="manual-row">
+        <input type="text" id="manual-code" placeholder="O escribe el código, ej. QR-001">
+        <button onclick="tryManualCode()">Probar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="detail-overlay">
+    <div class="modal">
+      <div class="close-x" onclick="closeDetail()">✕</div>
+      <div class="detail-hero" id="detail-hero">🏆</div>
+      <div class="detail-title" id="detail-title">Nombre del logro</div>
+      <div class="detail-place" id="detail-place">📍 Lugar</div>
+      <div class="detail-desc" id="detail-desc">"Descripción del logro."</div>
+      <div class="detail-meta">
+        <div class="meta-chip"><div class="v" id="detail-rarity">Común</div><div class="k">Rareza</div></div>
+        <div class="meta-chip"><div class="v" id="detail-xp">50 XP</div><div class="k">Recompensa</div></div>
+        <div class="meta-chip"><div class="v" id="detail-status">🔒</div><div class="k">Estado</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== UNLOCK OVERLAY ===== -->
+  <div class="unlock-overlay" id="unlock-overlay">
+    <div class="unlock-card" id="unlock-card">
+      <div class="unlock-eyebrow">Logro desbloqueado</div>
+      <div class="unlock-icon" id="unlock-icon">🏆</div>
+      <div class="unlock-name" id="unlock-name">Nombre</div>
+      <div class="unlock-place" id="unlock-place">📍 Lugar</div>
+      <div class="unlock-xp" id="unlock-xp">+50 XP</div>
+      <button class="unlock-close" onclick="closeUnlock()">Continuar</button>
+    </div>
+  </div>
+
+  <!-- ===== ONBOARDING: elegir nombre ===== -->
+  <div class="onboarding-overlay" id="onboarding-overlay">
+    <div class="ob-eyebrow">Bienvenido a</div>
+    <div class="ob-title">Logroño Achievements</div>
+    <div class="ob-icon">🏆</div>
+    <div class="ob-desc">Antes de empezar a cazar logros por la ciudad, dinos cómo quieres que te llamemos.</div>
+    <input type="text" class="ob-input" id="onboarding-input" placeholder="Tu nombre" maxlength="16" autocomplete="off">
+    <button class="ob-btn" id="onboarding-btn" onclick="submitOnboarding()" disabled>Empezar la aventura</button>
+    <div class="ob-foot">Podrás cambiarlo luego desde tu perfil</div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+</div>
+
+<script>
+/* ==========================================================
+   DATOS: base de logros. El "code" es lo que contiene el QR.
+   ========================================================== */
+const ACHIEVEMENTS = [
+  {code:'QR-001', name:'Cliente VIP de Pizza', place:'Domino\'s Pizza', desc:'Has demostrado que una buena pizza nunca falla.', icon:'🍕', rarity:'comun', xp:50, secret:false},
+  {code:'QR-002', name:'Ratón de Biblioteca', place:'Biblioteca de La Rioja', desc:'Entre estanterías es donde mejor te encuentras.', icon:'📚', rarity:'raro', xp:80, secret:false},
+  {code:'QR-003', name:'Respira Aire Fresco', place:'Parque del Ebro', desc:'Un paseo junto al río siempre sienta bien.', icon:'🌳', rarity:'comun', xp:40, secret:false},
+  {code:'QR-004', name:'Noche de Cine', place:'Cines 7 Infantes', desc:'Palomitas, pantalla grande y silencio, por favor.', icon:'🎬', rarity:'raro', xp:80, secret:false},
+  {code:'QR-005', name:'Strike!', place:'Bolera de Logroño', desc:'Diez bolos, una bola, ninguna excusa.', icon:'🎳', rarity:'epico', xp:150, secret:false},
+  {code:'QR-006', name:'Futbolero', place:'Estadio Las Gaunas', desc:'Con la bufanda puesta pase lo que pase.', icon:'⚽', rarity:'epico', xp:150, secret:false},
+  {code:'QR-007', name:'Riojano de Verdad', place:'Panadería del casco antiguo', desc:'El pan de cada día, como debe ser.', icon:'🥖', rarity:'raro', xp:80, secret:false},
+  {code:'QR-008', name:'Comprador Compulsivo', place:'Centro Comercial Berceo', desc:'Entraste a mirar y saliste con cinco bolsas.', icon:'🛍️', rarity:'comun', xp:40, secret:false},
+  {code:'QR-009', name:'Tapeo de Laurel', place:'Calle Laurel', desc:'Una caña, un pincho, y a la siguiente.', icon:'🍢', rarity:'epico', xp:150, secret:false},
+  {code:'QR-011', name:'Cruzando el Ebro', place:'Puente de Piedra', desc:'Un pie a cada lado del río, como manda la tradición.', icon:'🌉', rarity:'comun', xp:40, secret:false},
+  {code:'QR-012', name:'Bajo la Aguja', place:'Concatedral de La Redonda', desc:'Las dos torres siempre te encuentran, mires donde mires.', icon:'⛪', rarity:'raro', xp:80, secret:false},
+  {code:'QR-013', name:'Paseo con Vistas', place:'Muro de la Mota', desc:'Todo Logroño a tus pies, o casi.', icon:'🏰', rarity:'comun', xp:40, secret:false},
+  {code:'QR-014', name:'Banco del Espolón', place:'Paseo del Espolón', desc:'El punto de encuentro de toda la vida.', icon:'🌳', rarity:'comun', xp:40, secret:false},
+  {code:'QR-015', name:'Amigo del Fardachón', place:'Estatua del Fardachón, Revellín', desc:'Le has hecho una foto, como todo el mundo.', icon:'🦎', rarity:'raro', xp:80, secret:false},
+  {code:'QR-016', name:'Modo Cultura', place:'Calle Sagasta', desc:'Un paseo por la calle con más ambiente de la ciudad.', icon:'🖼️', rarity:'epico', xp:150, secret:false},
+  {code:'QR-017', name:'De Feria por San Blas', place:'Mercado de San Blas', desc:'Fruta, queso y algo de cotilleo de puesto en puesto.', icon:'🧺', rarity:'raro', xp:80, secret:false},
+  {code:'QR-018', name:'Universitario por un Día', place:'Universidad de La Rioja', desc:'Aunque solo sea para cruzar el campus.', icon:'🎓', rarity:'raro', xp:80, secret:false},
+  {code:'QR-019', name:'A Remar a La Grajera', place:'Pozas del Iregua', desc:'Un baño en el río cuando aprieta el calor.', icon:'🚣', rarity:'epico', xp:150, secret:false},
+  {code:'QR-020', name:'Guardián del Ayuntamiento', place:'Plaza del Ayuntamiento', desc:'Delante del edificio de Moneo, foto obligatoria.', icon:'🏛️', rarity:'legendario', xp:220, secret:false},
+  {code:'QR-010', name:'¿Cómo has llegado aquí?', place:'???', desc:'Hay algo escondido en algún lugar de la ciudad...', icon:'👑', rarity:'mitico', xp:300, secret:true},
+  {code:'QR-021', name:'Punto de Encuentro', place:'Casa de Izan', desc:'Da igual el plan que hubiera, siempre se acababa aquí.', icon:'🏠', rarity:'mitico', xp:300, secret:false},
+  {code:'QR-022', name:'El Otro Puente', place:'Puente de Hierro', desc:'El de las vías, el que casi nadie cruza a pie.', icon:'🌉', rarity:'raro', xp:80, secret:false},
+  {code:'QR-023', name:'Modo Alternativo', place:'Casa de las Ciencias', desc:'Un poco de cultura fuera del circuito de siempre.', icon:'🎨', rarity:'raro', xp:80, secret:false},
+  {code:'QR-024', name:'Grada en Pie', place:'El Lobete', desc:'Concierto, evento o lo que tocara esa noche.', icon:'🏟️', rarity:'epico', xp:150, secret:false},
+  {code:'QR-025', name:'Cata Riojana', place:'Bodegas Franco-Españolas', desc:'Un vino, una explicación que no entendiste del todo, y otro vino.', icon:'🍇', rarity:'epico', xp:150, secret:false},
+  {code:'QR-026', name:'El Primer Bus', place:'Estación de Autobuses', desc:'Volviendo a casa cuando el resto de la ciudad se está levantando.', icon:'🚌', rarity:'raro', xp:80, secret:false},
+  {code:'QR-027', name:'Punto de Paso', place:'Glorieta del Doctor Zubía', desc:'Por aquí acabas pasando tarde o temprano.', icon:'⛲', rarity:'comun', xp:40, secret:false},
+  {code:'QR-028', name:'Ruta por San Juan', place:'Calle San Juan', desc:'La otra zona de marcha, para cuando el Laurel se queda pequeño.', icon:'🌙', rarity:'epico', xp:150, secret:false},
+  {code:'QR-031', name:'Se Me Han Ido los Pies', place:'Todo el casco antiguo, en una sola noche', desc:'Empezaste en un sitio y acabaste sin saber muy bien cómo en el otro extremo.', icon:'🚶', rarity:'legendario', xp:220, secret:false},
+  {code:'QR-033', name:'Rolléame Esta', place:'Biblioteca Rafael Azcona', desc:'Aquí no hay quien te gane a base de silencio y paciencia.', icon:'📖', rarity:'epico', xp:150, secret:false},
+  {code:'QR-034', name:'Este Mapa no Está ni en el R.E.P.O.', place:'', desc:'Un rincón de la ciudad que ni el mejor explorador tenía fichado.', icon:'🗺️', rarity:'mitico', xp:300, secret:false},
+
+  /* --- Logros automáticos: no se consiguen escaneando un QR --- */
+  {code:'AUTO-LOGIN', name:'Primer Paso', place:'Al abrir la app por primera vez', desc:'Toda aventura empieza por elegir un nombre.', icon:'🚪', rarity:'comun', xp:20, secret:false, auto:true},
+  {code:'AUTO-MADRUGADOR', name:'El Madrugador', place:'', desc:'Has abierto la aplicación a las 9 de la mañana o antes.', icon:'🥴', rarity:'epico', xp:150, secret:false, auto:true},
+  {code:'AUTO-KING', name:'El Rey de Logroño', place:'Toda la ciudad', desc:'No queda ni un solo rincón por descubrir.', icon:'👑', rarity:'mitico', xp:500, secret:true, auto:true, hiddenDesc:'Se dice que solo se desbloquea al conseguir todos los demás logros de la ciudad.'},
+];
+
+const LEVEL_XP = 200; // xp necesaria por nivel
+const RARITY_LABEL = {comun:'Común', raro:'Raro', epico:'Épico', legendario:'Legendario', mitico:'Mítico'};
+
+/* ==========================================================
+   ESTADO Y PERSISTENCIA
+   ========================================================== */
+const SAVE_KEY = 'logrono_achievements_save_v1';
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return {name:'', unlocked:{}, sound:true, vibrate:true};
+}
+let state = loadState();
+
+function saveState(){
+  localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+}
+
+function totalXP(){
+  return Object.values(state.unlocked).reduce((sum,u)=> sum + (u.xp||0), 0);
+}
+function levelInfo(){
+  const xp = totalXP();
+  const level = Math.floor(xp / LEVEL_XP) + 1;
+  const into = xp % LEVEL_XP;
+  return {xp, level, into, pct: Math.round((into/LEVEL_XP)*100)};
+}
+function unlockedCount(){ return Object.keys(state.unlocked).length; }
+function totalCount(){ return ACHIEVEMENTS.length; }
+
+/* ==========================================================
+   NAVEGACIÓN ENTRE PANTALLAS
+   ========================================================== */
+function goTo(screen){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+screen).classList.add('active');
+  document.querySelectorAll('.navitem[data-screen]').forEach(n=>{
+    n.classList.toggle('active', n.dataset.screen===screen);
+  });
+  document.querySelector('.screens').scrollTop = 0;
+  if(screen==='logros') renderAchievements();
+  if(screen==='perfil') renderPerfil();
+}
+
+/* ==========================================================
+   RENDER: INICIO
+   ========================================================== */
+function renderHome(){
+  const li = levelInfo();
+  document.getElementById('home-name').textContent = state.name;
+  document.getElementById('home-avatar').textContent = state.avatarImg ? '' : state.name.charAt(0).toUpperCase();
+  document.getElementById('home-avatar').style.backgroundImage = state.avatarImg ? `url(${state.avatarImg})` : 'none';
+  document.getElementById('home-level').textContent = li.level;
+  document.getElementById('home-xpfill').style.width = li.pct + '%';
+  document.getElementById('home-xptext').textContent = `${li.into} / ${LEVEL_XP} XP`;
+  document.getElementById('stat-count').textContent = unlockedCount();
+  document.getElementById('stat-level').textContent = li.level;
+  document.getElementById('stat-pct').textContent = Math.round((unlockedCount()/totalCount())*100) + '%';
+
+  const recentList = document.getElementById('recent-list');
+  const unlockedCodes = Object.keys(state.unlocked).sort((a,b)=> state.unlocked[b].date - state.unlocked[a].date).slice(0,4);
+  if(unlockedCodes.length===0){
+    recentList.innerHTML = '<div class="empty-hint">Todavía no has desbloqueado ningún logro.<br>Escanea tu primer QR por la ciudad 🍕</div>';
+    return;
+  }
+  recentList.innerHTML = unlockedCodes.map(code=>{
+    const a = ACHIEVEMENTS.find(x=>x.code===code);
+    if(!a) return '';
+    return achRowHTML(a);
+  }).join('');
+}
+
+function achRowHTML(a){
+  return `<div class="ach-row" onclick="openDetail('${a.code}')">
+    <div class="ach-icon">${a.icon}</div>
+    <div class="txt"><h4>${a.name}</h4><p>${a.place || '&nbsp;'}</p></div>
+    <div class="rarity-tag tag-${a.rarity}">${RARITY_LABEL[a.rarity]}</div>
+  </div>`;
+}
+
+/* ==========================================================
+   RENDER: LOGROS
+   ========================================================== */
+function renderAchievements(){
+  const search = (document.getElementById('search-input').value||'').toLowerCase();
+  const rarityFilter = document.getElementById('rarity-filter').value;
+  const grid = document.getElementById('ach-grid');
+
+  document.getElementById('logros-pct-text').textContent = `${unlockedCount()} / ${totalCount()}`;
+  document.getElementById('logros-bar').style.width = Math.round((unlockedCount()/totalCount())*100) + '%';
+
+  const list = ACHIEVEMENTS.filter(a=>{
+    if(rarityFilter!=='todas' && a.rarity!==rarityFilter) return false;
+    const isUnlocked = !!state.unlocked[a.code];
+    const displayName = (a.secret && !isUnlocked) ? '?????' : a.name;
+    if(search && !displayName.toLowerCase().includes(search) && !(a.place.toLowerCase().includes(search))) return false;
+    return true;
+  });
+
+  grid.innerHTML = list.map(a=>{
+    const isUnlocked = !!state.unlocked[a.code];
+    const hidden = a.secret && !isUnlocked;
+    const name = hidden ? '?????' : a.name;
+    const place = hidden ? 'Logro secreto' : a.place;
+    const icon = hidden ? '❓' : a.icon;
+    return `<div class="ach-card rar-${a.rarity} ${isUnlocked?'':'locked'}" onclick="openDetail('${a.code}')">
+      <div class="ach-icon">${icon}</div>
+      <div class="txt">
+        <h4>${name}</h4>
+        <p>${a.xp} XP · ${RARITY_LABEL[a.rarity]}</p>
+        ${place ? `<p class="place">📍 ${place}</p>` : ''}
+      </div>
+      <div class="check">${isUnlocked ? '✅' : '🔒'}</div>
+    </div>`;
+  }).join('') || '<div class="empty-hint">No se han encontrado logros con ese filtro.</div>';
+}
+
+/* ==========================================================
+   RENDER: PERFIL
+   ========================================================== */
+function renderPerfil(){
+  const li = levelInfo();
+  document.getElementById('perfil-avatar').textContent = state.avatarImg ? '' : state.name.charAt(0).toUpperCase();
+  document.getElementById('perfil-avatar').style.backgroundImage = state.avatarImg ? `url(${state.avatarImg})` : 'none';
+  document.getElementById('avatar-remove-btn').style.display = state.avatarImg ? 'block' : 'none';
+  document.getElementById('perfil-name').value = state.name;
+  document.getElementById('perfil-sub').textContent = `Nivel ${li.level} · ${unlockedCount()} logros conseguidos`;
+  document.getElementById('p-total').textContent = li.xp;
+  document.getElementById('p-count').textContent = unlockedCount();
+  document.getElementById('p-pct').textContent = Math.round((unlockedCount()/totalCount())*100) + '%';
+
+  const rarities = ['comun','raro','epico','legendario','mitico'];
+  const breakdown = document.getElementById('rarity-breakdown');
+  breakdown.innerHTML = rarities.map(r=>{
+    const totalR = ACHIEVEMENTS.filter(a=>a.rarity===r).length;
+    if(totalR===0) return '';
+    const gotR = ACHIEVEMENTS.filter(a=>a.rarity===r && state.unlocked[a.code]).length;
+    const pct = Math.round((gotR/totalR)*100);
+    return `<div class="rb-row">
+      <div class="rb-dot" style="background:var(--r-${r})"></div>
+      <span style="width:78px;">${RARITY_LABEL[r]}</span>
+      <div class="bar"><div class="bar-fill" style="width:${pct}%; background:var(--r-${r})"></div></div>
+      <span class="count">${gotR}/${totalR}</span>
+    </div>`;
+  }).join('');
+}
+
+function setName(v){
+  state.name = (v||'Jugador').trim().slice(0,16) || 'Jugador';
+  saveState();
+  renderHome(); renderPerfil();
+}
+
+/* ==========================================================
+   FOTO DE PERFIL
+   ========================================================== */
+function handleAvatarUpload(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  const img = new Image();
+  img.onload = ()=>{
+    // Recorte cuadrado centrado + redimensionado a 240x240 para no llenar el almacenamiento
+    const SIZE = 240;
+    const canvas = document.createElement('canvas');
+    canvas.width = SIZE; canvas.height = SIZE;
+    const ctx = canvas.getContext('2d');
+    const side = Math.min(img.width, img.height);
+    const sx = (img.width - side) / 2;
+    const sy = (img.height - side) / 2;
+    ctx.drawImage(img, sx, sy, side, side, 0, 0, SIZE, SIZE);
+    state.avatarImg = canvas.toDataURL('image/jpeg', 0.85);
+    saveState();
+    renderHome(); renderPerfil();
+    showToast('Foto de perfil actualizada');
+  };
+  img.onerror = ()=> showToast('No se ha podido abrir esa imagen', true);
+  img.src = URL.createObjectURL(file);
+}
+function removeAvatar(){
+  delete state.avatarImg;
+  saveState();
+  renderHome(); renderPerfil();
+}
+
+function resetProgress(){
+  if(!confirm('¿Seguro que quieres borrar todo tu progreso? Esta acción no se puede deshacer.')) return;
+  state = {name:state.name, unlocked:{}, sound:state.sound, vibrate:state.vibrate};
+  saveState();
+  renderAll();
+  checkAutoAchievements();
+  showToast('Progreso reiniciado');
+}
+
+/* ==========================================================
+   AJUSTES
+   ========================================================== */
+function loadSettingsUI(){
+  document.getElementById('sound-toggle').checked = state.sound!==false;
+  document.getElementById('vibrate-toggle').checked = state.vibrate!==false;
+}
+function saveSettings(){
+  state.sound = document.getElementById('sound-toggle').checked;
+  state.vibrate = document.getElementById('vibrate-toggle').checked;
+  saveState();
+}
+
+/* ==========================================================
+   DETALLE DE LOGRO
+   ========================================================== */
+function openDetail(code){
+  const a = ACHIEVEMENTS.find(x=>x.code===code);
+  if(!a) return;
+  const isUnlocked = !!state.unlocked[a.code];
+  const hidden = a.secret && !isUnlocked;
+
+  document.getElementById('detail-hero').textContent = hidden ? '❓' : a.icon;
+  document.getElementById('detail-hero').classList.toggle('locked', !isUnlocked);
+  document.getElementById('detail-title').textContent = hidden ? '?????' : a.name;
+  const placeText = hidden ? 'Ubicación desconocida' : a.place;
+  const placeEl = document.getElementById('detail-place');
+  if(placeText){
+    placeEl.textContent = '📍 ' + placeText;
+    placeEl.style.display = '';
+  }else{
+    placeEl.style.display = 'none';
+  }
+  document.getElementById('detail-desc').textContent = hidden ? `"${a.hiddenDesc || 'Hay algo escondido en algún lugar de la ciudad...'}"` : `"${a.desc}"`;
+  document.getElementById('detail-rarity').textContent = hidden ? '???' : RARITY_LABEL[a.rarity];
+  document.getElementById('detail-xp').textContent = hidden ? '???' : a.xp + ' XP';
+  document.getElementById('detail-status').textContent = isUnlocked ? '✅' : '🔒';
+  document.getElementById('detail-overlay').classList.add('active');
+}
+function closeDetail(){ document.getElementById('detail-overlay').classList.remove('active'); }
+
+/* ==========================================================
+   ESCÁNER QR
+   ========================================================== */
+let camStream = null;
+let camAnimId = null;
+let scannerActive = false;
+
+function openScanner(){
+  document.getElementById('scanner-overlay').classList.add('active');
+  switchTab('cam');
+}
+function closeScanner(){
+  document.getElementById('scanner-overlay').classList.remove('active');
+  stopCamera();
+}
+function switchTab(tab){
+  document.getElementById('tab-cam').classList.toggle('active', tab==='cam');
+  document.getElementById('tab-upload').classList.toggle('active', tab==='upload');
+  document.getElementById('tab-cam-btn').classList.toggle('active', tab==='cam');
+  document.getElementById('tab-upload-btn').classList.toggle('active', tab==='upload');
+  if(tab==='cam') startCamera(); else stopCamera();
+}
+
+async function startCamera(){
+  const statusEl = document.getElementById('cam-status');
+  const video = document.getElementById('qr-video');
+  try{
+    camStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    video.srcObject = camStream;
+    await video.play();
+    statusEl.textContent = 'Buscando código QR…';
+    scannerActive = true;
+    scanLoop();
+  }catch(e){
+    statusEl.textContent = 'No se pudo acceder a la cámara. Usa "Subir imagen" o el código manual.';
+  }
+}
+function stopCamera(){
+  scannerActive = false;
+  if(camAnimId) cancelAnimationFrame(camAnimId);
+  if(camStream){
+    camStream.getTracks().forEach(t=>t.stop());
+    camStream = null;
+  }
+}
+
+const scanCanvas = document.createElement('canvas');
+const scanCtx = scanCanvas.getContext('2d', {willReadFrequently:true});
+
+function scanLoop(){
+  if(!scannerActive) return;
+  const video = document.getElementById('qr-video');
+  if(video.readyState === video.HAVE_ENOUGH_DATA && typeof jsQR !== 'undefined'){
+    scanCanvas.width = video.videoWidth;
+    scanCanvas.height = video.videoHeight;
+    scanCtx.drawImage(video, 0, 0, scanCanvas.width, scanCanvas.height);
+    const imageData = scanCtx.getImageData(0,0,scanCanvas.width, scanCanvas.height);
+    const result = jsQR(imageData.data, imageData.width, imageData.height, {inversionAttempts:'attemptBoth'});
+    if(result && result.data){
+      handleScannedCode(result.data);
+      return;
+    }
+  }
+  camAnimId = requestAnimationFrame(scanLoop);
+}
+
+function handleFileUpload(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  if(typeof jsQR === 'undefined'){
+    showToast('No se pudo cargar el lector de QR (revisa tu conexión) y recarga la página', true);
+    return;
+  }
+  const img = new Image();
+  img.onload = ()=>{
+    // Limita el tamaño para que fotos muy grandes del móvil no cuelguen el canvas
+    const MAX_SIDE = 1600;
+    let w = img.width, h = img.height;
+    if(Math.max(w,h) > MAX_SIDE){
+      const scale = MAX_SIDE / Math.max(w,h);
+      w = Math.round(w*scale); h = Math.round(h*scale);
+    }
+    scanCanvas.width = w;
+    scanCanvas.height = h;
+    scanCtx.drawImage(img,0,0,w,h);
+    const imageData = scanCtx.getImageData(0,0,w,h);
+    const result = jsQR(imageData.data, imageData.width, imageData.height, {inversionAttempts:'attemptBoth'});
+    if(result && result.data){
+      handleScannedCode(result.data);
+    }else{
+      showToast('No se ha detectado ningún QR en esa imagen', true);
+    }
+  };
+  img.onerror = ()=> showToast('No se ha podido abrir esa imagen', true);
+  img.src = URL.createObjectURL(file);
+}
+
+function tryManualCode(){
+  const val = document.getElementById('manual-code').value.trim();
+  if(!val) return;
+  handleScannedCode(val);
+}
+
+function handleScannedCode(raw){
+  const code = raw.trim().toUpperCase();
+  const a = ACHIEVEMENTS.find(x=>x.code===code);
+  if(!a || a.auto){
+    showToast('Código no reconocido: ' + code, true);
+    return;
+  }
+  if(state.unlocked[a.code]){
+    showToast('Ya tienes ese logro: ' + a.name);
+    closeScanner();
+    return;
+  }
+  closeScanner();
+  unlockAchievement(a);
+  checkAutoAchievements();
+}
+
+/* Comprueba y desbloquea los logros que no dependen de un QR:
+   - "Primer Paso": al iniciar sesión por primera vez.
+   - "El Rey de Logroño": al tener todos los demás logros. */
+function checkAutoAchievements(){
+  const login = ACHIEVEMENTS.find(a=>a.code==='AUTO-LOGIN');
+  if(login && state.name && !state.unlocked[login.code]){
+    unlockAchievement(login);
+  }
+  const madrugador = ACHIEVEMENTS.find(a=>a.code==='AUTO-MADRUGADOR');
+  if(madrugador && !state.unlocked[madrugador.code]){
+    const now = new Date();
+    const beforeOrAtNine = now.getHours() < 9 || (now.getHours()===9 && now.getMinutes()===0);
+    if(beforeOrAtNine) unlockAchievement(madrugador);
+  }
+  const king = ACHIEVEMENTS.find(a=>a.code==='AUTO-KING');
+  if(king && !state.unlocked[king.code]){
+    const others = ACHIEVEMENTS.filter(a=>a.code!==king.code);
+    const allDone = others.every(a=> !!state.unlocked[a.code]);
+    if(allDone) unlockAchievement(king);
+  }
+}
+
+/* ==========================================================
+   DESBLOQUEO DE LOGRO
+   ========================================================== */
+function unlockAchievement(a){
+  state.unlocked[a.code] = {xp:a.xp, date:Date.now()};
+  saveState();
+
+  document.getElementById('unlock-icon').textContent = a.icon;
+  document.getElementById('unlock-name').textContent = a.name;
+  const unlockPlaceEl = document.getElementById('unlock-place');
+  if(a.place){ unlockPlaceEl.textContent = '📍 ' + a.place; unlockPlaceEl.style.display=''; }
+  else{ unlockPlaceEl.style.display='none'; }
+  document.getElementById('unlock-xp').textContent = '+' + a.xp + ' XP';
+  spawnConfetti();
+  document.getElementById('unlock-overlay').classList.add('active');
+
+  if(state.sound!==false) playChime();
+  if(state.vibrate!==false && navigator.vibrate) navigator.vibrate([40,30,80]);
+
+  renderAll();
+}
+function closeUnlock(){
+  document.getElementById('unlock-overlay').classList.remove('active');
+}
+
+function spawnConfetti(){
+  const card = document.getElementById('unlock-card');
+  const colors = ['#e0b24c','#e0405f','#4f8fd9','#e9edf3'];
+  for(let i=0;i<18;i++){
+    const c = document.createElement('div');
+    c.className='confetti';
+    c.style.left = (10 + Math.random()*80) + '%';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDuration = (1 + Math.random()*0.8) + 's';
+    c.style.animationDelay = (Math.random()*0.3) + 's';
+    card.appendChild(c);
+    setTimeout(()=>c.remove(), 2200);
+  }
+}
+
+/* Sonido sintetizado con Web Audio API (sin archivos externos) */
+let audioCtx = null;
+function playChime(){
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523.25, 659.25, 783.99, 1046.5]; // C5 E5 G5 C6
+    notes.forEach((freq, i)=>{
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      const start = audioCtx.currentTime + i*0.09;
+      gain.gain.setValueAtTime(0, start);
+      gain.gain.linearRampToValueAtTime(0.15, start+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, start+0.5);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(start);
+      osc.stop(start+0.5);
+    });
+  }catch(e){}
+}
+
+/* ==========================================================
+   TOAST
+   ========================================================== */
+let toastTimer = null;
+function showToast(msg, isError){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('err', !!isError);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> t.classList.remove('show'), 2600);
+}
+
+/* ==========================================================
+   INIT
+   ========================================================== */
+function renderAll(){
+  renderHome();
+  renderAchievements();
+  renderPerfil();
+  loadSettingsUI();
+}
+
+/* ==========================================================
+   ONBOARDING: elegir nombre la primera vez que se abre la app
+   ========================================================== */
+function showOnboardingIfNeeded(){
+  if(!state.name){
+    document.getElementById('onboarding-overlay').classList.add('active');
+    const input = document.getElementById('onboarding-input');
+    const btn = document.getElementById('onboarding-btn');
+    input.addEventListener('input', ()=>{ btn.disabled = input.value.trim().length===0; });
+    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !btn.disabled) submitOnboarding(); });
+    setTimeout(()=> input.focus(), 300);
+  }
+}
+function submitOnboarding(){
+  const input = document.getElementById('onboarding-input');
+  const val = input.value.trim().slice(0,16);
+  if(!val) return;
+  state.name = val;
+  saveState();
+  document.getElementById('onboarding-overlay').classList.remove('active');
+  renderAll();
+  checkAutoAchievements();
+}
+
+renderAll();
+showOnboardingIfNeeded();
+if(state.name) checkAutoAchievements();
+</script>
+</body>
+</html>
